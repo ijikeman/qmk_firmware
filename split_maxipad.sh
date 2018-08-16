@@ -1,0 +1,1 @@
+ sudo avrdude -v -patmega32u4 -c avr109 -P /dev/cu.usbmodem1421 -b 57600 -D -U flash:w:/Users/fsvuser/git/qmk_firmware/split_maxipad_rev1_ijikeman.hex:i -C /Users/fsvuser/Library/Arduino15/packages/SparkFun/hardware/avr/1.1.5/avrdude.conf
