@@ -20,6 +20,7 @@ extern keymap_config_t keymap_config;
 #define MACRO_TMUX_QUOT 35
 #define MACRO_ZOOMIN        41
 #define MACRO_ZOOMOUT        42
+#define MACRO_SANDS      43
 
 #define M_BRC   M(MACRO_TMUX_BRC)
 #define M_QUOT   M(MACRO_TMUX_QUOT)
@@ -27,6 +28,7 @@ extern keymap_config_t keymap_config;
 #define M_S_MINUS   M(MACRO_TMUX_S_MINUS)
 #define M_ZOOMIN   M(MACRO_ZOOMIN)
 #define M_ZOOMOUT   M(MACRO_ZOOMOUT)
+#define M_SANDS   M(MACRO_SANDS)
 
 #define PUSH_TIME 100
 
@@ -50,14 +52,14 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * |------+------+------+------+------+------|------+------+------+------+------+------|
  * | Shift|   Z  |   X  |   C  |   V  |   B  |   N  |   M  |   ,  |   .  |   /  |Enter |
  * |------+------+------+------+------+------+------+------+------+------+------+------|
- * |Adjust| Ctrl | Alt  | GUI  |Lower |    Space    |Raise | Left | Down |  Up  |Right |
+ * | ESC  | Ctrl | Alt  | GUI|Low/LANG||MOU/SPC|BKSP/SFT|Rai/LANG| Left | Down |  Up  |Right |
  * `-----------------------------------------------------------------------------------'
  */
 [_QWERTY] = LAYOUT_ortho_4x12(
    KC_TAB,  KC_Q,    KC_W,    KC_E,    KC_R,    KC_T,    KC_Y,    KC_U,    KC_I,    KC_O,    KC_P,    M_BRC, \
    KC_LCTL, KC_A,    KC_S,    KC_D,    KC_F,    KC_G,    KC_H,    KC_J,    KC_K,    KC_L,    KC_SCLN, KC_ENT, \
    KC_LSFT, KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,    KC_N,    KC_M,    KC_COMM, KC_DOT,  KC_SLSH, M_QUOT, \
-   KC_ESC,  M_LANG, KC_LALT, KC_LGUI, LOWER,LT(_MOUSE, KC_SPC),   KC_BSPC,  RAISE,    KC_LEFT, KC_DOWN, KC_UP, KC_RGHT \
+   KC_ESC,  KC_NO, KC_LALT, KC_LGUI, LT(LOWER,M_LANG),LT(_MOUSE, KC_SPC),   M_SANDS,  LT(RAISE, M_LANG),    KC_LEFT, KC_DOWN, KC_UP, KC_RGHT \
 ),
 
 /* Lower
@@ -108,6 +110,20 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 void persistent_default_layer_set(uint16_t default_layer) {
   eeconfig_update_default_layer(default_layer);
   default_layer_set(default_layer);
+}
+
+static uint16_t shift_count = 0; //this is used to keep track of shift state and avoid inserting non breakable space
+void hold_shift(void) {
+  shift_count = shift_count + 1;
+  register_code(KC_LSHIFT);
+}
+
+void release_shift(void) {
+  shift_count = shift_count - 1;
+  if(shift_count <= 0){
+    unregister_code(KC_LSHIFT);
+    shift_count = 0;
+  }
 }
 
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
@@ -209,7 +225,6 @@ const macro_t *action_get_macro(keyrecord_t *record, uint8_t id, uint8_t opt)
           }
         }
         break;
-        break;
         case MACRO_ZOOMIN:
         if (record->event.pressed) {
           return MACRO(D(LCTL), D(UP), U(LCTL), END);
@@ -218,6 +233,17 @@ const macro_t *action_get_macro(keyrecord_t *record, uint8_t id, uint8_t opt)
         case MACRO_ZOOMOUT:
         if (record->event.pressed) {
           return MACRO(D(LCTL), T(DOWN), U(LCTL), END);
+        }
+        break;
+        case MACRO_SANDS:
+        if (record->event.pressed) {
+          key_timer = timer_read();
+          hold_shift();
+        } else {
+          if (timer_elapsed(key_timer) >= PUSH_TIME) {
+            return MACRO(T(BSPC), END);
+          }
+          release_shift();
         }
         break;
       }
