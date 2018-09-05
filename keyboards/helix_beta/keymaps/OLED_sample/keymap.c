@@ -3,9 +3,6 @@
 #include "action_layer.h"
 #include "eeconfig.h"
 #include "LUFA/Drivers/Peripheral/TWI.h"
-#ifdef SSD1306OLED
-  #include "ssd1306.h"
-#endif
 
 extern keymap_config_t keymap_config;
 
@@ -278,17 +275,6 @@ void matrix_init_user(void) {
     RGB_current_mode = rgblight_config.mode;
 }
 
-//SSD1306 OLED init and update loop, make sure to add #define SSD1306OLED in config.h
-#ifdef SSD1306OLED
-void matrix_master_OLED_init (void) {
-    TWI_Init(TWI_BIT_PRESCALE_1, TWI_BITLENGTH_FROM_FREQ(1, 800000));
-    iota_gfx_init();   // turns on the display
-}
-
-void matrix_scan_user(void) {
-     iota_gfx_task();  // this is what updates the display continuously
-}
-#endif
 
 /*
  * Macro definition
