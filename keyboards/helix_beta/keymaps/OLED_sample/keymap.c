@@ -3,11 +3,11 @@
 #include "action_layer.h"
 #include "eeconfig.h"
 #include "LUFA/Drivers/Peripheral/TWI.h"
+#ifdef SSD1306OLED
+  #include "ssd1306.h"
+#endif
 
 extern keymap_config_t keymap_config;
-
-//Following line allows macro to read current RGB settings
-extern rgblight_config_t rgblight_config;
 
 
 // Each layer gets a name for readability, which is then used in the keymap matrix below.
@@ -59,10 +59,6 @@ extern rgblight_config_t rgblight_config;
 #define M_OSX_RETURN   M(MACRO_OSX_RETURN)
 #define M_OSX_APP      M(MACRO_OSX_APP)
 
-#define M_TLANG   M(MACRO_TMUX_LANG)
-#define M_BRC   M(MACRO_TMUX_BRC)
-#define M_QUOT   M(MACRO_TMUX_QUOT)
-
 #define PUSH_TIME 100
 
 enum custom_keycodes {
@@ -70,14 +66,6 @@ enum custom_keycodes {
   LOWER,
   RAISE,
   MOUSE,
-  RGBLED_TOGGLE,
-  RGBLED_STEP_MODE,
-  RGBLED_INCREASE_HUE,
-  RGBLED_DECREASE_HUE,
-  RGBLED_INCREASE_SAT,
-  RGBLED_DECREASE_SAT,
-  RGBLED_INCREASE_VAL,
-  RGBLED_DECREASE_VAL,
 };
 
 //Tap Dance Declarations
@@ -193,23 +181,9 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 #error "undefined keymaps"
 #endif
 
-// define variables for reactive RGB
-bool TOG_STATUS = false;
-int RGB_current_mode;
-
 void persistent_default_layer_set(uint16_t default_layer) {
   eeconfig_update_default_layer(default_layer);
   default_layer_set(default_layer);
-}
-
-// Setting ADJUST layer RGB back to default
-void update_tri_layer_RGB(uint8_t layer1, uint8_t layer2, uint8_t layer3) {
-  if (IS_LAYER_ON(layer1) && IS_LAYER_ON(layer2)) {
-    rgblight_mode(RGB_current_mode);
-    layer_on(layer3);
-  } else {
-    layer_off(layer3);
-  }
 }
 
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
@@ -222,48 +196,21 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
       break;
     case LOWER:
       if (record->event.pressed) {
-          //not sure how to have keyboard check mode and set it to a variable, so my work around
-          //uses another variable that would be set to true after the first time a reactive key is pressed.
-        if (TOG_STATUS) { //TOG_STATUS checks is another reactive key currently pressed, only changes RGB mode if returns false
-        } else {
-          TOG_STATUS = !TOG_STATUS;
-          rgblight_mode(16);
-        }
         layer_on(_LOWER);
-        update_tri_layer_RGB(_LOWER, _RAISE, _MOUSE);
+        update_tri_layer(_LOWER, _RAISE, _MOUSE);
       } else {
-        rgblight_mode(RGB_current_mode);   // revert RGB to initial mode prior to RGB mode change
-        TOG_STATUS = false;
         layer_off(_LOWER);
-        update_tri_layer_RGB(_LOWER, _RAISE, _MOUSE);
+        update_tri_layer(_LOWER, _RAISE, _MOUSE);
       }
       return false;
       break;
     case RAISE:
       if (record->event.pressed) {
-        //not sure how to have keyboard check mode and set it to a variable, so my work around
-        //uses another variable that would be set to true after the first time a reactive key is pressed.
-        if (TOG_STATUS) { //TOG_STATUS checks is another reactive key currently pressed, only changes RGB mode if returns false
-        } else {
-          TOG_STATUS = !TOG_STATUS;
-          rgblight_mode(15);
-        }
         layer_on(_RAISE);
-        update_tri_layer_RGB(_LOWER, _RAISE, _MOUSE);
+        update_tri_layer(_LOWER, _RAISE, _MOUSE);
       } else {
-        rgblight_mode(RGB_current_mode);  // revert RGB to initial mode prior to RGB mode change
         layer_off(_RAISE);
-        TOG_STATUS = false;
-        update_tri_layer_RGB(_LOWER, _RAISE, _MOUSE);
-      }
-      return false;
-      break;
-      //led operations - RGB mode change now updates the RGB_current_mode to allow the right RGB mode to be set after reactive keys are released
-    case RGB_MOD:
-      if (record->event.pressed) {
-        rgblight_mode(RGB_current_mode);
-        rgblight_step();
-        RGB_current_mode = rgblight_config.mode;
+        update_tri_layer(_LOWER, _RAISE, _MOUSE);
       }
       return false;
       break;
@@ -272,9 +219,19 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 }
 
 void matrix_init_user(void) {
-    RGB_current_mode = rgblight_config.mode;
 }
 
+//SSD1306 OLED init and update loop, make sure to add #define SSD1306OLED in config.h
+#ifdef SSD1306OLED
+void matrix_master_OLED_init (void) {
+    TWI_Init(TWI_BIT_PRESCALE_1, TWI_BITLENGTH_FROM_FREQ(1, 800000));
+    iota_gfx_init();   // turns on the display
+}
+
+void matrix_scan_user(void) {
+     iota_gfx_task();  // this is what updates the display continuously
+}
+#endif
 
 /*
  * Macro definition
