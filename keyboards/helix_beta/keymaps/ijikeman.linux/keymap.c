@@ -173,7 +173,6 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
       _______, KC_BTN2, KC_WH_D, _______, KC_WH_U, _______, _______, LGUI(KC_C), LGUI(KC_X), LGUI(KC_V), _______, _______, \
       _______, _______, _______, _______, _______, _______, _______, _______,  _______, _______, _______, _______ \
     )
-
 };
 
 #else
@@ -185,6 +184,7 @@ void persistent_default_layer_set(uint16_t default_layer) {
   default_layer_set(default_layer);
 }
 
+/*
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
   switch (keycode) {
     case QWERTY:
@@ -226,7 +226,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
   }
   return true;
 }
-
+*/
 /*
  * Macro definition
  */
@@ -249,13 +249,7 @@ const macro_t *action_get_macro(keyrecord_t *record, uint8_t id, uint8_t opt)
         break;
         case MACRO_TMUX_LANG:
         if (record->event.pressed) {
-          key_timer = timer_read();
-        } else {
-          if (timer_elapsed(key_timer) >= PUSH_TIME) {
-            return MACRO(D(LCTL), T(SPC), U(LCTL), END);
-          } else {
-            return MACRO(END);
-          }
+          return MACRO(D(LCTL), T(SPC), U(LCTL), END);
         }
         break;
         case MACRO_TMUX_MINUS:
