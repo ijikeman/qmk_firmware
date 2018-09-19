@@ -18,11 +18,19 @@ extern keymap_config_t keymap_config;
 #define MACRO_TMUX_S_MINUS 34
 #define MACRO_TMUX_QUOT 35
 
+#define MACRO_CUT 40
+#define MACRO_COPY 41
+#define MACRO_PASTE 42
+
 #define M_LANG M(MACRO_TMUX_LANG)
 #define M_BRC   M(MACRO_TMUX_BRC)
 #define M_MINUS   M(MACRO_TMUX_MINUS)
 #define M_S_MINUS   M(MACRO_TMUX_S_MINUS)
 #define M_QUOT   M(MACRO_TMUX_QUOT)
+
+#define M_CUT   M(MACRO_CUT)
+#define M_COPY   M(MACRO_COPY)
+#define M_PASTE   M(MACRO_PASTE)
 
 #define PUSH_TIME 75
 
@@ -41,9 +49,9 @@ enum custom_keycodes {
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 /* Base
 * ,-----------------------------------------------------------------------------------.
-* | IME |   Q  |   W  |   E  |   R  |   T  |   Y  |   U  |   I  |   O  |   P  |  [/] |
+* |      |  Q  |   W  |   E  |   R  |   T  |   Y  |   U  |   I  |   O  |   P  |  [/] |
 * |------+------+------+------+------+-------------+------+------+------+------+------|
-* |TAB/CTR|  A  |   S  |   D  |   F  |   G  |   H  |   J  |   K  |   L  |   ;  |Enter |
+* | CTR  |  A  |   S  |   D  |   F  |   G  |   H  |   J  |   K  |   L  |   ;  |Enter |
 * |------+------+------+------+------+------|------+------+------+------+------+------|
 * |ESC/SFT|  Z  |   X  |   C  |   V  |   B  |   N  |   M  |   ,  |   .  |  /  | '/\  |
 * |------+------+------+------+------+------+------+------+------+------+------+------|
@@ -51,10 +59,10 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 * `-----------------------------------------------------------------------------------'
  */
 [_BASE] = LAYOUT_ortho_4x12(
-   M_LANG,  KC_Q,    KC_W,    KC_E,    KC_R,    KC_T,    KC_Y,    KC_U,    KC_I,    KC_O,    KC_P,    M_BRC, \
-   CTL_T(KC_TAB), KC_A,    KC_S,    KC_D,    KC_F,    KC_G,    KC_H,    KC_J,    KC_K,    KC_L,    KC_SCLN, KC_ENT, \
-   SFT_T(KC_ESC), KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,    KC_N,    KC_M,  KC_COMM, KC_DOT,  KC_SLSH, M_QUOT, \
-   RGB,  KC_NO,  KC_LALT, KC_LGUI,LOWER,LT(_MOUSE,KC_SPC),SFT_T(KC_BSPC), RAISE, KC_RALT, KC_NO, KC_NO, KC_NO  \
+   KC_NO,KC_Q,    KC_W,    KC_E,    KC_R,    KC_T,    KC_Y,    KC_U,    KC_I,    KC_O,    KC_P,    M_BRC, \
+   CTL_T(KC_TAB), KC_A,KC_S,   KC_D,    KC_F,    KC_G,    KC_H,    KC_J,    KC_K,    KC_L,    KC_SCLN, KC_ENT, \
+   SFT_T(KC_ESC), KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,    KC_N,    KC_M,    KC_COMM, KC_DOT,  KC_SLSH, M_QUOT, \
+   RGB,  KC_NO,   KC_LALT, KC_LGUI,LOWER,LT(_MOUSE,KC_SPC),SFT_T(KC_BSPC), RAISE, KC_RALT, KC_NO, KC_NO, KC_NO  \
 ),
 
 
@@ -62,7 +70,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * ,-----------------------------------------------------------------------------------.
  * |   ~  |   !  |   @  |   #  |   $  |   %  |   ^  |   &  |   *  |   (  |   )  |  _/+ |
  * |------+------+------+------+------+-------------+------+------+------+------+------|
- * | CAPS |      |      |      |      |      | LEFT | DOWN |  UP  | RGHT |      |      |
+ * | IME |      |      |      |      |      | LEFT | DOWN |  UP  | RGHT |      |      |
  * |------+------+------+------+------+------|------+------+------+------+------+------|
  * |      |      |      |      |      |      |      |      |      |      |      |      |
  * |------+------+------+------+------+------+------+------+------+------+------+------|
@@ -71,7 +79,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  */
 [_LOWER] = LAYOUT_ortho_4x12( \
   S(KC_GRV),S(KC_1),S(KC_2), S(KC_3), S(KC_4),S(KC_5),S(KC_6), S(KC_7), S(KC_8), S(KC_9),S(KC_0), M_S_MINUS, \
-  KC_CAPS, _______, _______, _______, _______, _______, KC_LEFT, KC_DOWN, KC_UP, KC_RGHT,   _______, _______, \
+  M_LANG, _______, _______, _______, _______, _______, KC_LEFT, KC_DOWN, KC_UP, KC_RGHT,   _______, _______, \
   _______, _______, _______, _______, _______, _______, _______, _______,  _______, _______, _______, _______, \
   RESET, _______, _______, _______, _______, _______, KC_DEL, _______, _______, _______, _______, _______ \
 ),
@@ -96,20 +104,20 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
 /* Mouse
  * ,-----------------------------------------------------------------------------------.
- * |      |      |      |  MUP |      |WWW_REF| F7   |  F8  |  F9  | F10  | F11  |  F12 |
+ * |      |      |      |  MUP |     |WWW_REF| F7   |  F8  |  F9  | F10  | F11  |  F12 |
  * |------+------+------+------+------+-------------+------+------+------+------+------|
  * |      |LCLICK| MLEFT|MDOWN |MRGHT |WWW_BK| LEFT | DOWN |  UP  | RGHT |      |      |
  * |------+------+------+------+------+------|------+------+------+------+------+------|
  * |      |RCLICK|WHDOWN|      | WHUP |WWW_FW| CUT  | COPY | PASTE|      |      |      |
  * |------+------+------+------+------+------+------+------+------+------+------+------|
- * |      |      |      |      |      |      |      |      |      |      |      |      |
+ * | CAPS |      |      |      |      |      |      |      |      |      |      |      |
  * `-----------------------------------------------------------------------------------'
  */
 [_MOUSE] =  LAYOUT_ortho_4x12( \
   _______, _______, _______, KC_MS_U, _______, KC_WREF, KC_F7,  KC_F8,   KC_F9,  KC_F10, KC_F11, KC_F12, \
-  _______, KC_BTN1, KC_MS_L, KC_MS_D, KC_MS_R, KC_WBAK, KC_LEFT, KC_DOWN, KC_UP, KC_RGHT,   _______, _______, \
-  _______, KC_BTN2, KC_WH_D, _______, KC_WH_U, KC_WFWD, KC_CUT , KC_COPY, KC_PASTE, _______, _______, _______, \
-  KC_SLCK, _______, _______, _______, _______, _______, _______, _______,  _______, _______, _______, _______ \
+  _______, KC_BTN1, KC_MS_L, KC_MS_D, KC_MS_R, KC_WBAK, KC_LEFT,KC_DOWN, KC_UP, KC_RGHT,   _______, _______, \
+  _______, KC_BTN2, KC_WH_D, _______, KC_WH_U, KC_WFWD, M_CUT,  M_COPY,  M_PASTE, _______, _______, _______, \
+  KC_CAPS, _______, _______, _______, _______, _______, _______, _______,  _______, _______, _______, _______ \
 ),
 
 [_RGB] =  LAYOUT_ortho_4x12( \
@@ -223,6 +231,21 @@ const macro_t *action_get_macro(keyrecord_t *record, uint8_t id, uint8_t opt)
           } else {
             return MACRO(T(QUOT), END);
           }
+        }
+        break;
+        case MACRO_CUT:
+        if (record->event.pressed) {
+          return MACRO(D(LCTL), T(X), U(LCTL), END);
+        }
+        break;
+        case MACRO_COPY:
+        if (record->event.pressed) {
+          return MACRO(D(LCTL), T(C), U(LCTL), END);
+        }
+        break;
+        case MACRO_PASTE:
+        if (record->event.pressed) {
+          return MACRO(D(LCTL), T(V), U(LCTL), END);
         }
         break;
       }

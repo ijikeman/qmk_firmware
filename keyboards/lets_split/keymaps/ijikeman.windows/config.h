@@ -46,10 +46,23 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #define MOUSEKEY_MAX_SPEED      4
 #define MOUSEKEY_WHEEL_DELAY 0
 
+// ENABLE RGB MODE
 #undef RGBLED_NUM
 #define RGBLIGHT_ANIMATIONS
 #define RGBLED_NUM 10
 #define RGBLIGHT_HUE_STEP 10
 #define RGBLIGHT_SAT_STEP 17
 #define RGBLIGHT_VAL_STEP 17
+
+// ENABLE AUTO SHIFT
+#ifndef CONFIG_USER_H
+#define CONFIG_USER_H
+
+#include "../../config.h"
+
+#define AUTO_SHIFT_TIMEOUT 75
+#define NO_AUTO_SHIFT_SPECIAL
+
+#endif
+
 #endif
