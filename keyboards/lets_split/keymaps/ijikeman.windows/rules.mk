@@ -11,4 +11,4 @@ UNICODE_ENABLE = no         # Unicode
 BLUETOOTH_ENABLE = no       # Enable Bluetooth with the Adafruit EZ-Key HID
 RGBLIGHT_ENABLE = yes       # Enable WS2812 RGB underlight.  Do not enable this with audio at the same time.
 SUBPROJECT_rev1 = no
-AUTO_SHIFT_ENABLE = yes
+AUTO_SHIFT_ENABLE = no 

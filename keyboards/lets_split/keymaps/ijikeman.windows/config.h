@@ -55,14 +55,14 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #define RGBLIGHT_VAL_STEP 17
 
 // ENABLE AUTO SHIFT
-#ifndef CONFIG_USER_H
-#define CONFIG_USER_H
-
-#include "../../config.h"
-
-#define AUTO_SHIFT_TIMEOUT 75
-#define NO_AUTO_SHIFT_SPECIAL
-
-#endif
+//#ifndef CONFIG_USER_H
+//#define CONFIG_USER_H
+//
+//#include "../../config.h"
+//
+//#define AUTO_SHIFT_TIMEOUT 75
+//#define NO_AUTO_SHIFT_SPECIAL
+//
+//#endif
 
 #endif
