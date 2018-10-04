@@ -55,14 +55,14 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 * |------+------+------+------+------+------|------+------+------+------+------+------|
 * |ESC/SFT|  Z  |   X  |   C  |   V  |   B  |   N  |   M  |   ,  |   .  |  /  | '/\  |
 * |------+------+------+------+------+------+------+------+------+------+------+------|
-* | RGB  |      |  ALT | GUI  |Lower |SPC/MS|BS/Shif|Raise|  Alt |      |      |      |
+* | RGB  | IME  |  ALT | GUI  |Lower |SPC/MS|BS/Shif|Raise|  Alt |      |      |      |
 * `-----------------------------------------------------------------------------------'
  */
 [_BASE] = LAYOUT_ortho_4x12(
-   KC_NO,KC_Q,    KC_W,    KC_E,    KC_R,    KC_T,    KC_Y,    KC_U,    KC_I,    KC_O,    KC_P,    M_BRC, \
+   KC_NO,       KC_Q,  KC_W,    KC_E,    KC_R,    KC_T,    KC_Y,    KC_U,    KC_I,    KC_O,    KC_P,    M_BRC, \
    CTL_T(KC_TAB), KC_A,KC_S,   KC_D,    KC_F,    KC_G,    KC_H,    KC_J,    KC_K,    KC_L,    KC_SCLN, KC_ENT, \
    SFT_T(KC_ESC), KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,    KC_N,    KC_M,    KC_COMM, KC_DOT,  KC_SLSH, M_QUOT, \
-   RGB,  KC_NO,   KC_LALT, KC_LGUI,LOWER,LT(_MOUSE,KC_SPC),SFT_T(KC_BSPC), RAISE, KC_RALT, KC_NO, KC_NO, KC_NO  \
+   RGB,  M_LANG,   KC_LALT, KC_LGUI,LOWER,LT(_MOUSE,KC_SPC),SFT_T(KC_BSPC), RAISE, KC_RALT, KC_NO, KC_NO, KC_NO  \
 ),
 
 
@@ -70,7 +70,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * ,-----------------------------------------------------------------------------------.
  * |   ~  |   !  |   @  |   #  |   $  |   %  |   ^  |   &  |   *  |   (  |   )  |  _/+ |
  * |------+------+------+------+------+-------------+------+------+------+------+------|
- * | IME |      |      |      |      |      | LEFT | DOWN |  UP  | RGHT |      |      |
+ * |      |      |      |      |      |      | LEFT | DOWN |  UP  | RGHT |      |      |
  * |------+------+------+------+------+------|------+------+------+------+------+------|
  * |      |      |      |      |      |      |      |      |      |      |      |      |
  * |------+------+------+------+------+------+------+------+------+------+------+------|
@@ -79,7 +79,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  */
 [_LOWER] = LAYOUT_ortho_4x12( \
   S(KC_GRV),S(KC_1),S(KC_2), S(KC_3), S(KC_4),S(KC_5),S(KC_6), S(KC_7), S(KC_8), S(KC_9),S(KC_0), M_S_MINUS, \
-  M_LANG, _______, _______, _______, _______, _______, KC_LEFT, KC_DOWN, KC_UP, KC_RGHT,   _______, _______, \
+  _______, _______, _______, _______, _______, _______, KC_LEFT, KC_DOWN, KC_UP, KC_RGHT,   _______, _______, \
   _______, _______, _______, _______, _______, _______, _______, _______,  _______, _______, _______, _______, \
   RESET, _______, _______, _______, _______, _______, KC_DEL, _______, _______, _______, _______, _______ \
 ),
@@ -110,14 +110,14 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * |------+------+------+------+------+------|------+------+------+------+------+------|
  * |      |RCLICK|WHDOWN|      | WHUP |WWW_FW| CUT  | COPY | PASTE|      |      |      |
  * |------+------+------+------+------+------+------+------+------+------+------+------|
- * | CAPS |      |      |      |      |      |      |      |      |      |      |      |
+ * |      |      |      |      |      |      |      |      |      |      |      |      |
  * `-----------------------------------------------------------------------------------'
  */
 [_MOUSE] =  LAYOUT_ortho_4x12( \
   _______, _______, _______, KC_MS_U, _______, KC_WREF, KC_F7,  KC_F8,   KC_F9,  KC_F10, KC_F11, KC_F12, \
   _______, KC_BTN1, KC_MS_L, KC_MS_D, KC_MS_R, KC_WBAK, KC_LEFT,KC_DOWN, KC_UP, KC_RGHT,   _______, _______, \
   _______, KC_BTN2, KC_WH_D, _______, KC_WH_U, KC_WFWD, M_CUT,  M_COPY,  M_PASTE, _______, _______, _______, \
-  KC_CAPS, _______, _______, _______, _______, _______, _______, _______,  _______, _______, _______, _______ \
+  _______, _______, _______, _______, _______, _______, _______, _______,  _______, _______, _______, _______ \
 ),
 
 [_RGB] =  LAYOUT_ortho_4x12( \
