@@ -59,10 +59,10 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 * `-----------------------------------------------------------------------------------'
  */
 [_BASE] = KEYMAP( \
-   KC_TAB,  KC_Q,    KC_W,    KC_E,    KC_R,    KC_T,    KC_Y,    KC_U,    KC_I,    KC_O,    KC_P,    M_BRC, \
-   KC_LCTL, KC_A,    KC_S,    KC_D,    KC_F,    KC_G,    KC_H,    KC_J,    KC_K,    KC_L,    KC_SCLN, KC_ENT, \
+   KC_NO,  KC_Q,    KC_W,    KC_E,    KC_R,    KC_T,    KC_Y,    KC_U,    KC_I,    KC_O,    KC_P,    M_BRC, \
+   CTL_T(KC_TAB), KC_A,    KC_S,    KC_D,    KC_F,    KC_G,    KC_H,    KC_J,    KC_K,    KC_L,    KC_SCLN, KC_ENT, \
    SFT_T(KC_ESC), KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,    KC_N,    KC_M,  KC_COMM, KC_DOT,  KC_SLSH, M_QUOT, \
-   KC_NO,  KC_NO,  KC_LALT, KC_LGUI,LOWER,LT(_MOUSE,KC_SPC),SFT_T(KC_BSPC), RAISE, KC_RALT, KC_NO, KC_NO, KC_NO  \
+   KC_NO,  M_LANG,  KC_LALT, KC_LGUI,LOWER,LT(_MOUSE,KC_SPC),SFT_T(KC_BSPC), RAISE, KC_RALT, KC_NO, KC_NO, KC_NO  \
 ),
 
 /* Lower
@@ -79,7 +79,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 [_LOWER] = KEYMAP( \
   S(KC_GRV),S(KC_1),S(KC_2), S(KC_3), S(KC_4),S(KC_5),S(KC_6), S(KC_7), S(KC_8), S(KC_9),S(KC_0), M_S_MINUS, \
   KC_CAPS, _______, _______, _______, _______, _______, KC_LEFT, KC_DOWN, KC_UP, KC_RGHT,   _______, _______, \
-  M_LANG, _______, _______, _______, _______, _______, _______, _______,  _______, _______, _______, _______, \
+  _______, _______, _______, _______, _______, _______, _______, _______,  _______, _______, _______, _______, \
   RESET, _______, _______, _______, _______, _______, KC_DEL, _______, _______, _______, _______, _______ \
 ),
 
@@ -236,4 +236,3 @@ const macro_t *action_get_macro(keyrecord_t *record, uint8_t id, uint8_t opt)
       }
       return MACRO_NONE;
 };
-
