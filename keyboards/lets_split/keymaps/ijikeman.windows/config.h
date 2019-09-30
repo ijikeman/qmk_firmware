@@ -54,6 +54,9 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #define RGBLIGHT_SAT_STEP 17
 #define RGBLIGHT_VAL_STEP 17
 
+// SHIFT LOCK KAIHI
+#define PREVENT_STUCK_MODIFIERS
+
 // ENABLE AUTO SHIFT
 //#ifndef CONFIG_USER_H
 //#define CONFIG_USER_H
