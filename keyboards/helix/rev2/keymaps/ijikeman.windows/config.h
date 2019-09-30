@@ -25,5 +25,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //#include "serial_config_simpleapi.h"
 
 // place overrides here
+// Add Original
+#define TAPPING_TERM    100
+#define PREVENT_STUCK_MODIFIERS // Shift Layer Lock Kaihi
 
 #endif /* CONFIG_USER_H */

@@ -32,19 +32,25 @@ enum custom_keycodes {
   QWERTY = SAFE_RANGE,
   LOWER,
   RAISE,
-  ADJUST
+  ADJUST,
+  M_LANG,
+  M_BRC,
+  M_MINUS,
+  M_S_MINUS,
+  M_QUOT,
+  M_CUT,
+  M_COPY,
+  M_PASTE
 };
 
-enum macro_keycodes {
-  KC_SAMPLEMACRO,
-};
+//enum macro_keycodes {
+//};
 
 
 // Fillers to make layering more clear
 #define _______ KC_TRNS
 #define XXXXXXX KC_NO
 //Macros
-#define M_SAMPLE M(KC_SAMPLEMACRO)
 #define MACRO_TMUX_LANG 31
 #define MACRO_TMUX_BRC 32
 #define MACRO_TMUX_MINUS 33
@@ -69,28 +75,25 @@ enum macro_keycodes {
 
 #if HELIX_ROWS == 4
 
+
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
   /* Qwerty
    * ,-----------------------------------------.             ,-----------------------------------------.
-   * | Tab  |   Q  |   W  |   E  |   R  |   T  |             |   Y  |   U  |   I  |   O  |   P  | Bksp |
+   * | Esc  |   Q  |   W  |   E  |   R  |   T  |             |   Y  |   U  |   I  |   O  |   P  | []   |
    * |------+------+------+------+------+------|             |------+------+------+------+------+------|
-   * | Ctrl |   A  |   S  |   D  |   F  |   G  |             |   H  |   J  |   K  |   L  |   ;  |  '   |
+   * | Ctrl |   A  |   S  |   D  |   F  |   G  |             |   H  |   J  |   K  |   L  |   ;  |Enter |
    * |------+------+------+------+------+------|             |------+------+------+------+------+------|
-   * | Shift|   Z  |   X  |   C  |   V  |   B  |             |   N  |   M  |   ,  |   .  |   /  |Enter |
+   * | Shift|   Z  |   X  |   C  |   V  |   B  |             |   N  |   M  |   ,  |   .  |   /  | '|   |
    * |------+------+------+------+------+------+-------------+------+------+------+------+------+------|
-   * |Adjust| Esc  | Alt  | GUI  | EISU |Lower |Space |Space |Raise | KANA | Left | Down |  Up  |Right |
-//   KC_ESC,       KC_Q,  KC_W,    KC_E,    KC_R,    KC_T,    KC_Y,    KC_U,    KC_I,    KC_O,    KC_P,    M_BRC, \
-//   CTL_T(KC_TAB), KC_A,KC_S,   KC_D,    KC_F,    KC_G,    KC_H,    KC_J,    KC_K,    KC_L,    KC_SCLN, KC_ENT, \
-//   SFT_T(KC_ESC), KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,    KC_N,    KC_M,    KC_COMM, KC_DOT,  KC_SLSH, M_QUOT, \
-//   RGB,  M_LANG,   KC_LALT, KC_LGUI,LOWER,LT(_MOUSE,KC_SPC),SFT_T(KC_BSPC), RAISE, KC_RALT, KC_NO, KC_NO, KC_NO  \
+   * |Adjust| Lang  | Alt  | GUI |Lower | Mouse|Space | Space| Sft(BSPC)|Raise |  | Left | Down |  Up  |Right |
    * `-------------------------------------------------------------------------------------------------'
    */
   [_QWERTY] = LAYOUT( \
-      KC_ESC,  KC_Q,    KC_W,    KC_E,    KC_R,    KC_T,                      KC_Y,    KC_U,    KC_I,    KC_O,    KC_P,    KC_BSPC, \
+      KC_ESC,  KC_Q,    KC_W,    KC_E,    KC_R,    KC_T,                      KC_Y,    KC_U,    KC_I,    KC_O,    KC_P,    M_BRC, \
 CTL_T(KC_TAB), KC_A,    KC_S,    KC_D,    KC_F,    KC_G,                      KC_H,    KC_J,    KC_K,    KC_L,    KC_SCLN, KC_ENT, \
-SFT_T(KC_ESC), KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,                      KC_N,    KC_M,    KC_COMM, KC_DOT,  KC_SLSH, KC_QUOT, \
-      ADJUST,  KC_ESC,  KC_LALT, KC_LGUI, KC_SPC, LOWER,KC_SPC,SFT_T(KC_BSPC),RAISE,   KC_RALT, KC_LEFT, KC_DOWN, KC_UP,   KC_RGHT \
+SFT_T(KC_ESC), KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,                      KC_N,    KC_M,    KC_COMM, KC_DOT,  KC_SLSH, M_QUOT, \
+      ADJUST,  M_LANG,  KC_LALT, KC_LGUI, LOWER,SFT_T(KC_SPC),KC_SPC,KC_SPC, SFT_T(KC_BSPC),   RAISE,    KC_LEFT, KC_DOWN, KC_UP,   KC_RGHT \
       ),
 
   /* Lower
@@ -105,11 +108,23 @@ SFT_T(KC_ESC), KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,                      KC
    * `-------------------------------------------------------------------------------------------------'
    */
   [_LOWER] = LAYOUT( \
-      KC_TILD, KC_EXLM, KC_AT,   KC_HASH, KC_DLR,  KC_PERC,                   KC_CIRC, KC_AMPR, KC_ASTR, KC_LPRN, KC_RPRN, _______, \
-      _______, KC_F1,   KC_F2,   KC_F3,   KC_F4,   KC_F5,                     KC_F6,   KC_UNDS, KC_PLUS, KC_LCBR, KC_RCBR, KC_PIPE, \
-      _______, KC_F7,   KC_F8,   KC_F9,   KC_F10,  KC_F11,                    KC_F12,  _______, _______, KC_HOME, KC_END,  _______, \
-      _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, KC_MNXT, KC_VOLD, KC_VOLU, KC_MPLY \
+      S(KC_GRV),S(KC_1),S(KC_2), S(KC_3), S(KC_4),S(KC_5),                    S(KC_6), S(KC_7), S(KC_8), S(KC_9),S(KC_0), M_S_MINUS, \
+      KC_CAPS, _______, _______, _______, _______, _______,                   KC_LEFT, KC_DOWN, KC_UP, KC_RGHT,   _______, _______, \
+      _______, _______, _______, _______, _______, _______,                   _______, _______,  _______, _______, _______, _______, \
+      RESET, _______, _______, _______, _______, _______, _______,    KC_DEL, _______, _______, _______, _______, _______, _______ \
       ),
+
+/* Lower
+ * ,-----------------------------------------------------------------------------------.
+ * |   ~  |   !  |   @  |   #  |   $  |   %  |   ^  |   &  |   *  |   (  |   )  |  _/+ |
+ * |------+------+------+------+------+-------------+------+------+------+------+------|
+ * |      |      |      |      |      |      | LEFT | DOWN |  UP  | RGHT |      |      |
+ * |------+------+------+------+------+------|------+------+------+------+------+------|
+ * |      |      |      |      |      |      |      |      |      |      |      |      |
+ * |------+------+------+------+------+------+------+------+------+------+------+------|
+ * | Reset|      |      |      |      |      | Del  |      |      |      |      |      |
+ * `-----------------------------------------------------------------------------------'
+ */
 
   /* Raise
    * ,-----------------------------------------.             ,-----------------------------------------.
@@ -143,8 +158,8 @@ SFT_T(KC_ESC), KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,                      KC
   [_ADJUST] =  LAYOUT( \
       _______, RESET,   _______, _______, _______, _______,                   _______, _______, _______, _______, _______, KC_DEL, \
       _______, _______, _______, AU_ON,   AU_OFF,  AG_NORM,                   AG_SWAP, QWERTY,  _______, _______, _______, _______, \
-      _______, _______, _______, _______, _______, _______,                   _______, _______, RGB_TOG, RGB_HUI, RGB_SAI, RGB_VAI, \
-      _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, RGB_SMOD,RGB_HUD, RGB_SAD, RGB_VAD \
+      _______, _______, _______, _______, _______, _______,                   _______, _______, _______, _______, _______, _______, \
+      _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______\
       )
 };
 
@@ -174,6 +189,7 @@ void update_tri_layer_RGB(uint8_t layer1, uint8_t layer2, uint8_t layer3) {
   }
 }
 
+static uint16_t key_timer;
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
   switch (keycode) {
     case QWERTY:
@@ -237,8 +253,75 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         return false;
         break;
       //led operations - RGB mode change now updates the RGB_current_mode to allow the right RGB mode to be set after reactive keys are released
-  }
-  return true;
+    // Original Macro
+    case MACRO_TMUX_LANG:
+        if (record->event.pressed) {
+          key_timer = timer_read();
+        } else {
+          return MACRO(D(LALT), T(GRAVE), U(LALT), END);
+        }
+        break;
+    case MACRO_TMUX_BRC:
+        if (record->event.pressed) {
+          key_timer = timer_read();
+        } else {
+          if (timer_elapsed(key_timer) >= PUSH_TIME) {
+            return MACRO(T(RBRC), END);
+          } else {
+            return MACRO(T(LBRC), END);
+          }
+        }
+        break;
+    case MACRO_TMUX_MINUS:
+        if (record->event.pressed) {
+          key_timer = timer_read();
+        } else {
+          if (timer_elapsed(key_timer) >= PUSH_TIME) {
+            return MACRO(T(EQL), END);
+          } else {
+            return MACRO(T(MINUS), END);
+          }
+        }
+        break;
+    case MACRO_TMUX_S_MINUS:
+        if (record->event.pressed) {
+          key_timer = timer_read();
+        } else {
+          if (timer_elapsed(key_timer) >= PUSH_TIME) {
+            return MACRO(D(LSFT), T(EQL), U(LSFT), END);
+          } else {
+            return MACRO(D(LSFT), T(MINUS), U(LSFT), END);
+          }
+        }
+        break;
+    case MACRO_TMUX_QUOT:
+        if (record->event.pressed) {
+          key_timer = timer_read();
+        } else {
+          if (timer_elapsed(key_timer) >= PUSH_TIME) {
+            return MACRO(T(BSLS), END);
+          } else {
+            return MACRO(T(QUOT), END);
+          }
+        }
+        break;
+    case MACRO_CUT:
+        if (record->event.pressed) {
+          return MACRO(D(LCTL), T(X), U(LCTL), END);
+        }
+        break;
+    case MACRO_COPY:
+        if (record->event.pressed) {
+          return MACRO(D(LCTL), T(C), U(LCTL), END);
+        }
+        break;
+    case MACRO_PASTE:
+        if (record->event.pressed) {
+          return MACRO(D(LCTL), T(V), U(LCTL), END);
+        }
+        break;
+    }
+    return true;
 }
 
 void matrix_init_user(void) {
