@@ -264,9 +264,9 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
           key_timer = timer_read();
         } else {
           if (timer_elapsed(key_timer) >= PUSH_TIME) {
-            SEND_STRING(SS_TAP(X_RBRACKET));
+            SEND_STRING(SS_LSFT(SS_TAP(X_EQUAL)));
           } else {
-            SEND_STRING(SS_TAP(X_LBRACKET));
+            SEND_STRING(SS_LSFT(SS_TAP(X_MINUS)));
           }
         }
         break;
