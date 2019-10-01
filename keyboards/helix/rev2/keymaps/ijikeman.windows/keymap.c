@@ -234,9 +234,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     // Original Macro
     case M_LANG:
         if (record->event.pressed) {
-          key_timer = timer_read();
-        } else {
-          SEND_STRING(SS_LALT("~"));
+          SEND_STRING(SS_LALT(SS_TAP(X_GRAVE)));
         }
         break;
     case M_BRC:
@@ -244,9 +242,9 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
           key_timer = timer_read();
         } else {
           if (timer_elapsed(key_timer) >= PUSH_TIME) {
-            SEND_STRING(SS_TAP(X_RBRACKET));
-          } else {
             SEND_STRING(SS_TAP(X_LBRACKET));
+          } else {
+            SEND_STRING(SS_TAP(X_RBRACKET));
           }
         } 
         break;
