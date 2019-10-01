@@ -37,10 +37,7 @@ enum custom_keycodes {
   M_BRC,
   M_MINUS,
   M_S_MINUS,
-  M_QUOT,
-  M_CUT,
-  M_COPY,
-  M_PASTE
+  M_QUOT
 };
 
 //enum macro_keycodes {
@@ -51,25 +48,6 @@ enum custom_keycodes {
 #define _______ KC_TRNS
 #define XXXXXXX KC_NO
 //Macros
-#define MACRO_TMUX_LANG 31
-#define MACRO_TMUX_BRC 32
-#define MACRO_TMUX_MINUS 33
-#define MACRO_TMUX_S_MINUS 34
-#define MACRO_TMUX_QUOT 35
-
-#define MACRO_CUT 40
-#define MACRO_COPY 41
-#define MACRO_PASTE 42
-
-#define M_LANG M(MACRO_TMUX_LANG)
-#define M_BRC   M(MACRO_TMUX_BRC)
-#define M_MINUS   M(MACRO_TMUX_MINUS)
-#define M_S_MINUS   M(MACRO_TMUX_S_MINUS)
-#define M_QUOT   M(MACRO_TMUX_QUOT)
-
-#define M_CUT   M(MACRO_CUT)
-#define M_COPY   M(MACRO_COPY)
-#define M_PASTE   M(MACRO_PASTE)
 
 #define PUSH_TIME 75
 
@@ -93,7 +71,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
       KC_ESC,  KC_Q,    KC_W,    KC_E,    KC_R,    KC_T,                      KC_Y,    KC_U,    KC_I,    KC_O,    KC_P,    M_BRC, \
 CTL_T(KC_TAB), KC_A,    KC_S,    KC_D,    KC_F,    KC_G,                      KC_H,    KC_J,    KC_K,    KC_L,    KC_SCLN, KC_ENT, \
 SFT_T(KC_ESC), KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,                      KC_N,    KC_M,    KC_COMM, KC_DOT,  KC_SLSH, M_QUOT, \
-      ADJUST,  M_LANG,  KC_LALT, KC_LGUI, LOWER,SFT_T(KC_SPC),KC_SPC,KC_SPC, SFT_T(KC_BSPC),   RAISE,    KC_LEFT, KC_DOWN, KC_UP,   KC_RGHT \
+ADJUST,  M_LANG,  KC_LALT, KC_LGUI, LOWER,SFT_T(KC_SPC),SFT_T(KC_SPC),SFT_T(KC_BSPC), SFT_T(KC_BSPC),   RAISE,    KC_LEFT, KC_DOWN, KC_UP,   KC_RGHT \
       ),
 
   /* Lower
@@ -138,7 +116,7 @@ SFT_T(KC_ESC), KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,                      KC
    * `-------------------------------------------------------------------------------------------------'
    */
   [_RAISE] = LAYOUT( \
-      KC_GRV,  KC_1,    KC_2,    KC_3,    KC_4,    KC_5,                      KC_6,    KC_7,    KC_8,    KC_9,    KC_0,    KC_DEL, \
+      KC_GRV,  KC_1,    KC_2,    KC_3,    KC_4,    KC_5,                      KC_6,    KC_7,    KC_8,    KC_9,    KC_0,    M_MINUS, \
       _______, KC_F1,   KC_F2,   KC_F3,   KC_F4,   KC_F5,                     KC_F6,   KC_MINS, KC_EQL,  KC_LBRC, KC_RBRC, KC_BSLS, \
       _______, KC_F7,   KC_F8,   KC_F9,   KC_F10,  KC_F11,                    KC_F12,  _______, _______, KC_PGDN, KC_PGUP, _______, \
       _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, KC_MNXT, KC_VOLD, KC_VOLU, KC_MPLY \
@@ -254,70 +232,55 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         break;
       //led operations - RGB mode change now updates the RGB_current_mode to allow the right RGB mode to be set after reactive keys are released
     // Original Macro
-    case MACRO_TMUX_LANG:
+    case M_LANG:
         if (record->event.pressed) {
           key_timer = timer_read();
         } else {
-          return MACRO(D(LALT), T(GRAVE), U(LALT), END);
+          SEND_STRING(SS_LALT("~"));
         }
         break;
-    case MACRO_TMUX_BRC:
+    case M_BRC:
+	if (record->event.pressed) {
+          key_timer = timer_read();
+        } else {
+          if (timer_elapsed(key_timer) >= PUSH_TIME) {
+            SEND_STRING(SS_TAP(X_RBRACKET));
+          } else {
+            SEND_STRING(SS_TAP(X_LBRACKET));
+          }
+        } 
+        break;
+    case M_MINUS:
         if (record->event.pressed) {
           key_timer = timer_read();
         } else {
           if (timer_elapsed(key_timer) >= PUSH_TIME) {
-            return MACRO(T(RBRC), END);
+            SEND_STRING(SS_TAP(X_EQUAL));
           } else {
-            return MACRO(T(LBRC), END);
+            SEND_STRING(SS_TAP(X_MINUS));
           }
         }
         break;
-    case MACRO_TMUX_MINUS:
+    case M_S_MINUS:
         if (record->event.pressed) {
           key_timer = timer_read();
         } else {
           if (timer_elapsed(key_timer) >= PUSH_TIME) {
-            return MACRO(T(EQL), END);
+            SEND_STRING(SS_TAP(X_RBRACKET));
           } else {
-            return MACRO(T(MINUS), END);
+            SEND_STRING(SS_TAP(X_LBRACKET));
           }
         }
         break;
-    case MACRO_TMUX_S_MINUS:
+    case M_QUOT:
         if (record->event.pressed) {
           key_timer = timer_read();
         } else {
           if (timer_elapsed(key_timer) >= PUSH_TIME) {
-            return MACRO(D(LSFT), T(EQL), U(LSFT), END);
+            SEND_STRING(SS_TAP(X_BSLASH));
           } else {
-            return MACRO(D(LSFT), T(MINUS), U(LSFT), END);
+            SEND_STRING(SS_TAP(X_QUOTE));
           }
-        }
-        break;
-    case MACRO_TMUX_QUOT:
-        if (record->event.pressed) {
-          key_timer = timer_read();
-        } else {
-          if (timer_elapsed(key_timer) >= PUSH_TIME) {
-            return MACRO(T(BSLS), END);
-          } else {
-            return MACRO(T(QUOT), END);
-          }
-        }
-        break;
-    case MACRO_CUT:
-        if (record->event.pressed) {
-          return MACRO(D(LCTL), T(X), U(LCTL), END);
-        }
-        break;
-    case MACRO_COPY:
-        if (record->event.pressed) {
-          return MACRO(D(LCTL), T(C), U(LCTL), END);
-        }
-        break;
-    case MACRO_PASTE:
-        if (record->event.pressed) {
-          return MACRO(D(LCTL), T(V), U(LCTL), END);
         }
         break;
     }
