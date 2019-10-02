@@ -25,7 +25,8 @@ enum layer_number {
     _QWERTY = 0,
     _LOWER,
     _RAISE,
-    _ADJUST
+    _ADJUST,
+    _LED
 };
 
 enum custom_keycodes {
@@ -33,6 +34,7 @@ enum custom_keycodes {
   LOWER,
   RAISE,
   ADJUST,
+  LED,
   M_LANG,
   M_BRC,
   M_MINUS,
@@ -49,7 +51,7 @@ enum custom_keycodes {
 #define XXXXXXX KC_NO
 //Macros
 
-#define PUSH_TIME 75
+#define PUSH_TIME 90
 
 #if HELIX_ROWS == 4
 
@@ -71,7 +73,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
       KC_ESC,  KC_Q,    KC_W,    KC_E,    KC_R,    KC_T,                      KC_Y,    KC_U,    KC_I,    KC_O,    KC_P,    M_BRC, \
 CTL_T(KC_TAB), KC_A,    KC_S,    KC_D,    KC_F,    KC_G,                      KC_H,    KC_J,    KC_K,    KC_L,    KC_SCLN, KC_ENT, \
 SFT_T(KC_ESC), KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,                      KC_N,    KC_M,    KC_COMM, KC_DOT,  KC_SLSH, M_QUOT, \
-ADJUST,  M_LANG,  KC_LALT, KC_LGUI, LOWER,SFT_T(KC_SPC),SFT_T(KC_SPC),SFT_T(KC_BSPC), SFT_T(KC_BSPC),   RAISE,    KC_LEFT, KC_DOWN, KC_UP,   KC_RGHT \
+LED,  M_LANG,  KC_LALT, KC_LGUI, LOWER,SFT_T(KC_SPC),SFT_T(KC_SPC),SFT_T(KC_BSPC), SFT_T(KC_BSPC),   RAISE,    KC_LEFT, KC_DOWN, KC_UP,   KC_RGHT \
       ),
 
   /* Lower
@@ -138,7 +140,14 @@ ADJUST,  M_LANG,  KC_LALT, KC_LGUI, LOWER,SFT_T(KC_SPC),SFT_T(KC_SPC),SFT_T(KC_B
       _______, _______, _______, AU_ON,   AU_OFF,  AG_NORM,                   AG_SWAP, QWERTY,  _______, _______, _______, _______, \
       _______, _______, _______, _______, _______, _______,                   _______, _______, _______, _______, _______, _______, \
       _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______\
-      )
+      ),
+
+  [_LED] =  LAYOUT( \
+      _______, _______, _______, _______, _______, _______,                   _______, _______, _______, _______, _______, _______, \
+      _______, RGB_TOG, RGB_HUI, RGB_SAI, RGB_VAI, _______,                   _______, _______, _______, _______, _______, _______, \
+      _______, RGB_MOD, RGB_HUD, RGB_SAD, RGB_VAD, _______,                   _______, _______, _______, _______, _______, _______, \
+      _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______  \
+)
 };
 
 #else
@@ -222,11 +231,11 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
       }
       return false;
       break;
-    case ADJUST:
+    case LED:
         if (record->event.pressed) {
-          layer_on(_ADJUST);
+          layer_on(_LED);
         } else {
-          layer_off(_ADJUST);
+          layer_off(_LED);
         }
         return false;
         break;
