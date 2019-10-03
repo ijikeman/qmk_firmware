@@ -27,7 +27,7 @@ extern keymap_config_t keymap_config;
 #define M_PASTE   M(MACRO_PASTE)
 */
 
-#define PUSH_TIME 75
+#define PUSH_TIME 100
 
 enum custom_keycodes {
   BASE = SAFE_RANGE,
