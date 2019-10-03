@@ -55,14 +55,14 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 * |------+------+------+------+------+------|------+------+------+------+------+------|
 * |ESC/SFT|  Z  |   X  |   C  |   V  |   B  |   N  |   M  |   ,  |   .  |  /  | '/\  |
 * |------+------+------+------+------+------+------+------+------+------+------+------|
-* |      |      |      |  ALT | GUI  |Lower/SPC|Raise/BS | Led/IME|     |     |    |   |
+* |      |      |      |  ALT | GUI  |LOW/SPC|RAI/BS| IME | LED  |      l     |      |
 * `-----------------------------------------------------------------------------------'
  */
 [_BASE] = LAYOUT_ortho_4x12(
    KC_ESC,       KC_Q,  KC_W,    KC_E,    KC_R,    KC_T,    KC_Y,    KC_U,    KC_I,    KC_O,    KC_P,    M_BRC, \
    CTL_T(KC_TAB), KC_A,KC_S,   KC_D,    KC_F,    KC_G,    KC_H,    KC_J,    KC_K,    KC_L,    KC_SCLN, KC_ENT, \
    SFT_T(KC_ESC), KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,    KC_N,    KC_M,    KC_COMM, KC_DOT,  KC_SLSH, M_QUOT, \
-   _______,  _______,  _______, KC_LALT, KC_LGUI,LT(_LOWER,KC_SPC),LT(_RAISE,KC_BSPC), LT(_LED,M_LANG),_______,_______,_______,_______  \
+   _______,  _______,  _______, KC_LALT, KC_LGUI,LT(_LOWER,KC_SPC),LT(_RAISE,KC_BSPC), M_LANG, LED,_______,_______,_______  \
 ),
 
 
@@ -186,7 +186,7 @@ const macro_t *action_get_macro(keyrecord_t *record, uint8_t id, uint8_t opt)
         if (record->event.pressed) {
           key_timer = timer_read();
         } else {
-          return MACRO(D(LALT), T(GRAVE), U(LALT), END);
+          return MACRO(D(LCTL), T(SPC), U(LCTL), END);
         }
         break;
         case MACRO_TMUX_BRC:
